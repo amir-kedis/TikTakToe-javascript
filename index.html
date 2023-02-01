@@ -2,17 +2,54 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 TikTakToe</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 TikTakToe</title>
 
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="./app.js" defer></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./app.js" defer></script>
 </head>
 
 <body>
-    
+  <header>
+    <h1>TicTacToe</h1>
+  </header>
+
+  <main>
+    <div class="gameConfig">
+      <div class="player-control">
+
+        <div class="player-control__player">
+          <span class="player-control__title">Player 1</span>
+          <span class="player-control__person">YOU!</span>
+        </div>
+
+        <div class="player-control__player">
+          <span class="player-control__title">Player 2</span>
+          <select name="player" id="SelectPlayer">
+            <option value="human">Friend</option>
+            <option value="aiEasy">AI easy</option>
+            <option value="aiHard">AI Madness</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="startBtn">Start The Game</button>
+
+    </div>
+
+    <div class="board"></div>
+
+    <div class="result">
+      <div class="result__box">
+        <h2>Tie</h2>
+        <button id="restart">RESTART</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>Made by <a href="https://www.linkedin.com/in/amir-kedis/">@Amir_Kedis</a></footer>
 </body>
 
 </html>

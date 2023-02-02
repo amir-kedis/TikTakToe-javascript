@@ -102,3 +102,54 @@ footer {
 .shown {
   display: block;
 }
+
+.board {
+  --size: 50vh;
+  width: var(--size);
+  height: var(--size);
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  .cell {
+    cursor: pointer;
+  }
+
+  .cell:nth-child(3n + 1) {
+    border-right: 2px solid #000;
+  }
+  .cell:nth-child(3n + 2) {
+    border-right: 2px solid #000;
+  }
+  .cell:nth-child(1),
+  .cell:nth-child(2),
+  .cell:nth-child(3) {
+    border-bottom: 2px solid #000;
+  }
+  .cell:nth-child(4),
+  .cell:nth-child(5),
+  .cell:nth-child(6) {
+    border-bottom: 2px solid #000;
+  }
+
+  &.x-turn,
+  &.o-turn {
+    .cell:hover::before {
+      content: "X";
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+
+      font-size: 5rem;
+      font-weight: bolder;
+      opacity: 0.6;
+    }
+  }
+    &.o-turn {
+    .cell:hover::before {
+      content: "O";
+    }
+  }
+}

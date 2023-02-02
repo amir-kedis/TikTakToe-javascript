@@ -94,4 +94,45 @@ footer a:visited {
 
 .shown {
   display: block;
+}
+
+.board {
+  --size: 50vh;
+  width: var(--size);
+  height: var(--size);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.board .cell {
+  cursor: pointer;
+}
+.board .cell:nth-child(3n+1) {
+  border-right: 2px solid #000;
+}
+.board .cell:nth-child(3n+2) {
+  border-right: 2px solid #000;
+}
+.board .cell:nth-child(1),
+.board .cell:nth-child(2),
+.board .cell:nth-child(3) {
+  border-bottom: 2px solid #000;
+}
+.board .cell:nth-child(4),
+.board .cell:nth-child(5),
+.board .cell:nth-child(6) {
+  border-bottom: 2px solid #000;
+}
+.board.x-turn .cell:hover::before, .board.o-turn .cell:hover::before {
+  content: "X";
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 5rem;
+  font-weight: bolder;
+  opacity: 0.6;
+}
+.board.o-turn .cell:hover::before {
+  content: "O";
 }/*# sourceMappingURL=style.css.map */

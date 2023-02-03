@@ -112,12 +112,41 @@ const gameBoard = (() => {
     }
   }
 
+  const isEmpty = () => {
+    return _board.every(cell => cell === "");
+  }
+
+  const EmptyCellsNumbers = () => {
+    const count = 0;
+    for (const cell of _board) {
+      if (cell === "") {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  const getLegalMoves = () => {
+    const legalMoves = [];
+
+    gameBoard.getBoard().forEach((cell, id) => {
+      if (cell === "") {
+        legalMoves.push(id);
+      }
+    })
+
+    return legalMoves;
+  }
+
   return {
     getBoard,
     playCell,
     checkForWin,
     checkForTie,
-    resetBoard
+    resetBoard,
+    getLegalMoves,
+    isEmpty,
+    EmptyCellsNumbers,
   }
 })();
 
@@ -306,13 +335,7 @@ const game = (() => {
   }
 
   const _aiEasyMove = () => {
-    const legalMoves = [];
-
-    gameBoard.getBoard().forEach((cell, id) => {
-      if (cell === "") {
-        legalMoves.push(id);
-      }
-    })
+    const legalMoves = gameBoard.getLegalMoves();
 
     const randomNum = Math.floor(Math.random() * legalMoves.length);
 

@@ -3,9 +3,9 @@
  */
 const gameBoard = (() => {
   const _board = [
+    "O", "X", "X",
     "O", "X", "",
-    "O", "X", "",
-    "O", "X", "O"
+    "X", "X", "O"
   ];
 
   const getBoard = () => {
@@ -16,19 +16,6 @@ const gameBoard = (() => {
     if (index < 9 && index >= 0) {
       _board[index] = symbol;
     }
-  };
-
-  const checkForWin = () => {
-    const winningCombinations = [
-      ["X", "X", "X", "", "", "", "", "", "",],
-      ["", "", "", "X", "X", "X", "", "", "",],
-      ["", "", "", "", "", "", "X", "X", "X",],
-      ["X", "", "", "X", "", "", "X", "", "",],
-      ["", "X", "", "", "X", "", "", "X", "",],
-      ["", "", "X", "", "", "X", "", "", "X",],
-      ["X", "", "", "", "X", "", "", "", "X",],
-      ["", "", "X", "", "X", "", "X", "", "",],
-    ];
   };
 
   /**
@@ -73,7 +60,35 @@ const gameBoard = (() => {
     return false;
   }
 
+  /**
+ * return true if game is won by row combination 
+ * by the symbol
+ * @param {String} symbol 
+ * @returns bool
+ */
+  const _checkForDiagonals = (symbol) => {
 
+    const diagonals = [
+      [_board[0], _board[4], _board[8]],
+      [_board[2], _board[4], _board[6]],
+    ]
+
+    for (const diagonal of diagonals) {
+      console.log({ diagonal });
+      console.log(diagonal.every((el) => el === symbol));
+
+      if (diagonal.every((el) => el === symbol)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  const checkForWin = () => {
+    
+  };
 
   return {
     getBoard,

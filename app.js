@@ -3,7 +3,17 @@
  * and storing the game board
  */
 const gameBoard = (() => {
-
+    const _board = [
+        "X", "O", "X",
+        "O", "X", "O",
+        "X", "O", "X"
+    ];
+    const getBoard = () => {
+        return _board;
+    };
+    return {
+        getBoard,
+    }
 })();
 
 /**

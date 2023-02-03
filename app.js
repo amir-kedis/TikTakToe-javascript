@@ -189,13 +189,20 @@ const displayController = (() => {
     })
   };
 
+  const attachBtnEvents = () => {
+    document.querySelector("#startBtn").addEventListener("click", () => {
+      game.startGame();
+    });
+  }
+
   return {
     updateBoard,
     showConfigMenu,
     showBoard,
     showResult,
     exchangeTurns,
-    attachCellEvents
+    attachCellEvents,
+    attachBtnEvents
   }
 })();
 
@@ -203,10 +210,10 @@ const displayController = (() => {
  * This Factory is responsible of creating player objs
  * which control player info
  */
-const createPlayer = () => {
-
+const createPlayer = (symbol, type) => {
   return {
-
+    symbol,
+    type
   }
 };
 
@@ -215,7 +222,28 @@ const createPlayer = () => {
  * comminute and managing the game on a high value
  */
 const game = (() => {
+  // players
+  let player1;
+  let player2;
+
   const boardEl = document.querySelector(".board");
+
+  const init = () => {
+    displayController.attachBtnEvents();
+    displayController.attachCellEvents();
+  }
+
+  const startGame = () => {
+    // display part
+    displayController.showBoard();
+
+    // get type of player 2
+    const player2Type = document.querySelector("#SelectPlayer").value;
+
+    // create players
+    player1 = createPlayer("X", "human");
+    player2 = createPlayer("O", player2Type);
+  }
 
   /**
    * this function marks the player mark in the board
@@ -244,6 +272,11 @@ const game = (() => {
   displayController.updateBoard();
 
   return {
-    play
+    play,
+    startGame,
+    init
   }
 })();
+
+// start game
+game.init();

@@ -4,9 +4,9 @@
  */
 const gameBoard = (() => {
     const _board = [
-        "X", "O", "",
-        "O", "", "O",
-        "X", "O", "X"
+        "", "", "",
+        "", "", "",
+        "", "", ""
     ];
 
     const getBoard = () => {
@@ -38,12 +38,15 @@ const displayController = (() => {
     const resultElement = document.querySelector(".result");
 
     /**
+     * managing items
+     */
+    const cells = boardEl.querySelectorAll(".cell");
+    const board = gameBoard.getBoard();
+
+    /**
      * updates the board UI with contents of gameBoard
      */
     const updateBoard = () => {
-        const cells = document.querySelectorAll(".cell");
-        const board = gameBoard.getBoard();
-
         cells.forEach((cell, index) => {
             if (board[index] === "X") {
                 cell.classList.add("cell--x");
@@ -57,7 +60,6 @@ const displayController = (() => {
             }
         });
     }
-
 
     /**
      * show menu functions
@@ -89,12 +91,22 @@ const displayController = (() => {
         boardEl.classList.toggle("o-turn");
     }
 
+    /**
+     * attaches click events to the board
+     */
+    const attachCellEvents = () => {
+        boardEl.addEventListener("click", (e) => {
+            game.play(e);
+        })
+    };
+
     return {
         updateBoard,
         showConfigMenu,
         showBoard,
         showResult,
-        exchangeTurns
+        exchangeTurns,
+        attachCellEvents
     }
 })();
 
@@ -104,6 +116,9 @@ const displayController = (() => {
  */
 const createPlayer = () => {
 
+    return {
+
+    }
 };
 
 /**
@@ -111,5 +126,35 @@ const createPlayer = () => {
  * comminute and managing the game on a high value
  */
 const game = (() => {
+    const boardEl = document.querySelector(".board");
+
+    /**
+     * this function marks the player mark in the board
+     * it also exchanges turns and updates interface
+     * @param {event} e 
+     * @returns 
+     */
+    const play = (e) => {
+        const ID = e.target.dataset.cellid;
+
+        if (gameBoard.getBoard()[ID] !== "") {
+            return;
+        }
+
+        if (boardEl.classList.contains("x-turn")) {
+            gameBoard.playCell(ID, "X");
+        } else {
+            gameBoard.playCell(ID, "O");
+        }
+
+        displayController.exchangeTurns();
+        displayController.updateBoard();
+    }
+
+    displayController.attachCellEvents();
     displayController.updateBoard();
+
+    return {
+        play
+    }
 })();

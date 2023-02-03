@@ -91,17 +91,6 @@ footer {
   }
 }
 
-.hidden {
-  display: none;
-}
-
-.shown_flex {
-  display: flex;
-}
-
-.shown {
-  display: block;
-}
 
 .board {
   --size: 50vh;
@@ -167,4 +156,50 @@ footer {
       content: "O";
     }
   }
+}
+
+.result {
+  &__box {
+    width: 650px;
+    height: 500px;
+    background-color: #F0F0F0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  h2 {
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 6rem;
+  }
+
+  button {
+    font-weight: bolder;
+    text-transform: uppercase;
+    color: #FFF;
+    background-color: var(--btn-color-red);
+    border: none;
+    outline: none;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+}
+
+
+
+.hidden {
+  display: none;
+}
+
+.shown_flex {
+  display: flex;
+}
+
+.shown {
+  display: block;
 }

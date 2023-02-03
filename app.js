@@ -166,10 +166,11 @@ const displayController = (() => {
     resultElement.classList.add("hidden");
   }
 
-  const showResult = () => {
+  const showResult = (msg) => {
     gameConfigElement.classList.add("hidden");
     boardEl.classList.add("hidden");
     resultElement.classList.remove("hidden");
+    resultElement.querySelector("h2").textContent = msg;
   }
 
   /**
@@ -266,6 +267,14 @@ const game = (() => {
 
     displayController.exchangeTurns();
     displayController.updateBoard();
+
+    if (gameBoard.checkForWin() === "X") {
+      displayController.showResult("X WON!!!");
+    } else if (gameBoard.checkForWin() === "O") {
+      displayController.showResult("O WON!!!");
+    } else if (gameBoard.checkForTie()) {
+      displayController.showResult("TIE!!!");
+    }
   }
 
   displayController.attachCellEvents();

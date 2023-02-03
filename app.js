@@ -8,11 +8,20 @@ const gameBoard = (() => {
         "O", "", "O",
         "X", "O", "X"
     ];
+
     const getBoard = () => {
         return _board;
     };
+
+    const playCell = (index, symbol) => {
+        if (index < 9 && index >= 0) {
+            _board[index] = symbol;
+        }
+    };
+
     return {
         getBoard,
+        playCell
     }
 })();
 
@@ -27,6 +36,7 @@ const displayController = (() => {
     const gameConfigElement = document.querySelector(".gameConfig");
     const boardEl = document.querySelector(".board");
     const resultElement = document.querySelector(".result");
+
     /**
      * updates the board UI with contents of gameBoard
      */
@@ -71,11 +81,20 @@ const displayController = (() => {
         resultElement.classList.remove("hidden");
     }
 
+    /**
+     * changes the turns in the display
+     */
+    const exchangeTurns = () => {
+        boardEl.classList.toggle("x-turn");
+        boardEl.classList.toggle("o-turn");
+    }
+
     return {
         updateBoard,
         showConfigMenu,
         showBoard,
-        showResult
+        showResult,
+        exchangeTurns
     }
 })();
 

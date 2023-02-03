@@ -114,6 +114,21 @@ footer {
 
   .cell {
     cursor: pointer;
+
+    &--x::before,
+    &--o::before {
+      content: "X";
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+
+      font-size: 5rem;
+      font-weight: bolder;
+    }
+    &--o::before {
+      content: "O";
+    }
   }
 
   .cell:nth-child(3n + 1) {
@@ -135,7 +150,7 @@ footer {
 
   &.x-turn,
   &.o-turn {
-    .cell:hover::before {
+    .cell:not(.cell--x):not(.cell--o):hover::before {
       content: "X";
       display: grid;
       place-items: center;
@@ -147,8 +162,8 @@ footer {
       opacity: 0.6;
     }
   }
-    &.o-turn {
-    .cell:hover::before {
+  &.o-turn {
+    .cell:not(.cell--x):not(.cell--o):hover::before {
       content: "O";
     }
   }

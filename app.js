@@ -95,10 +95,22 @@ const gameBoard = (() => {
     return "";
   };
 
+  /**
+   * checks if the game is tie or not
+   * @returns Bool
+   */
+  const checkForTie = () => {
+    const isBoardFull = _board.every(el => el !== "");
+    const isWon = checkForWin();
+
+    return (isBoardFull && !isWon);
+  }
+
   return {
     getBoard,
     playCell,
-    checkForWin
+    checkForWin,
+    checkForTie
   }
 })();
 

@@ -106,11 +106,18 @@ const gameBoard = (() => {
     return (isBoardFull && !isWon);
   }
 
+  const resetBoard = () => {
+    for (let i = 0; i < 9; i++) {
+      _board[i] = "";
+    }
+  }
+
   return {
     getBoard,
     playCell,
     checkForWin,
-    checkForTie
+    checkForTie,
+    resetBoard
   }
 })();
 
@@ -194,6 +201,9 @@ const displayController = (() => {
     document.querySelector("#startBtn").addEventListener("click", () => {
       game.startGame();
     });
+    document.querySelector("#restart").addEventListener("click", () => {
+      game.restartGame();
+    });
   }
 
   return {
@@ -246,6 +256,12 @@ const game = (() => {
     player2 = createPlayer("O", player2Type);
   }
 
+  const restartGame = () => {
+    gameBoard.resetBoard();
+    displayController.updateBoard();
+    displayController.showConfigMenu();
+  }
+
   /**
    * this function marks the player mark in the board
    * it also exchanges turns and updates interface
@@ -283,7 +299,8 @@ const game = (() => {
   return {
     play,
     startGame,
-    init
+    restartGame,
+    init,
   }
 })();
 

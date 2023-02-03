@@ -254,6 +254,9 @@ const game = (() => {
     // create players
     player1 = createPlayer("X", "human");
     player2 = createPlayer("O", player2Type);
+
+    // update interface
+    displayController.updateBoard();
   }
 
   const restartGame = () => {
@@ -275,13 +278,22 @@ const game = (() => {
       return;
     }
 
-    if (boardEl.classList.contains("x-turn")) {
+    if (player2.type === "human") {
+      if (boardEl.classList.contains("x-turn")) {
+        gameBoard.playCell(ID, "X");
+      } else {
+        gameBoard.playCell(ID, "O");
+      }
+      displayController.exchangeTurns();
+    } else if (player2.type === "aiEasy") {
+
       gameBoard.playCell(ID, "X");
-    } else {
-      gameBoard.playCell(ID, "O");
+      displayController.exchangeTurns();
+      gameBoard.playCell(_aiEasyMove(), "O");
+      displayController.exchangeTurns();
     }
 
-    displayController.exchangeTurns();
+
     displayController.updateBoard();
 
     if (gameBoard.checkForWin() === "X") {
@@ -293,8 +305,19 @@ const game = (() => {
     }
   }
 
-  displayController.attachCellEvents();
-  displayController.updateBoard();
+  const _aiEasyMove = () => {
+    const legalMoves = [];
+
+    gameBoard.getBoard().forEach((cell, id) => {
+      if (cell === "") {
+        legalMoves.push(id);
+      }
+    })
+
+    const randomNum = Math.floor(Math.random() * legalMoves.length);
+
+    return legalMoves[randomNum];
+  }
 
   return {
     play,
@@ -303,6 +326,8 @@ const game = (() => {
     init,
   }
 })();
+
+
 
 // start game
 game.init();

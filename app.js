@@ -2,57 +2,83 @@
  * This Module is responsible of controlling * and storing the game board
  */
 const gameBoard = (() => {
-    const _board = [
-        "", "", "",
-        "", "", "",
-        "O", "O", "O"
+  const _board = [
+    "O", "X", "",
+    "O", "X", "",
+    "O", "X", "O"
+  ];
+
+  const getBoard = () => {
+    return _board;
+  };
+
+  const playCell = (index, symbol) => {
+    if (index < 9 && index >= 0) {
+      _board[index] = symbol;
+    }
+  };
+
+  const checkForWin = () => {
+    const winningCombinations = [
+      ["X", "X", "X", "", "", "", "", "", "",],
+      ["", "", "", "X", "X", "X", "", "", "",],
+      ["", "", "", "", "", "", "X", "X", "X",],
+      ["X", "", "", "X", "", "", "X", "", "",],
+      ["", "X", "", "", "X", "", "", "X", "",],
+      ["", "", "X", "", "", "X", "", "", "X",],
+      ["X", "", "", "", "X", "", "", "", "X",],
+      ["", "", "X", "", "X", "", "X", "", "",],
     ];
+  };
 
-    const getBoard = () => {
-        return _board;
-    };
+  /**
+   * return true if game is won by row combination 
+   * by the symbol
+   * @param {String} symbol 
+   * @returns bool
+   */
+  const _checkForRows = (symbol) => {
+    for (let row = 0; row < 3; row++) {
+      const boardRow = _board.slice(row * 3, (row + 1) * 3);
+      if (boardRow.every((el) => el === symbol)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-    const playCell = (index, symbol) => {
-        if (index < 9 && index >= 0) {
-            _board[index] = symbol;
-        }
-    };
+  /**
+   * return true if game is won by row combination 
+   * by the symbol
+   * @param {String} symbol 
+   * @returns bool
+   */
+  const _checkForColumns = (symbol) => {
 
-    const checkForWin = () => {
-        const winningCombinations = [
-            ["X", "X", "X", "", "", "", "", "", "",],
-            ["", "", "", "X", "X", "X", "", "", "",],
-            ["", "", "", "", "", "", "X", "X", "X",],
-            ["X", "", "", "X", "", "", "X", "", "",],
-            ["", "X", "", "", "X", "", "", "X", "",],
-            ["", "", "X", "", "", "X", "", "", "X",],
-            ["X", "", "", "", "X", "", "", "", "X",],
-            ["", "", "X", "", "X", "", "X", "", "",],
-        ];
-    };
+    const columns = [
+      [_board[0], _board[3], _board[6]],
+      [_board[1], _board[4], _board[7]],
+      [_board[6], _board[7], _board[8]],
+    ]
 
-    /**
-     * return true if game is won by row combination 
-     * by the symbol
-     * @param {String} symbol 
-     * @returns bool
-     */
-    const _checkForRows = (symbol) => {
-        for (let row = 0; row < 3; row++) {
-            const boardRow = _board.slice(row * 3, (row + 1) * 3);
-            if (boardRow.every((el) => el === symbol)) {
-                return true;
-            }
-        }
-        return false;
+    for (const col of columns) {
+      console.log({ col });
+      console.log(col.every((el) => el === symbol));
+
+      if (col.every((el) => el === symbol)) {
+        return true;
+      }
     }
 
+    return false;
+  }
 
 
-    return {
-        getBoard,
-        playCell
-    }
+
+  return {
+    getBoard,
+    playCell
+  }
 })();
 
 /**
@@ -60,84 +86,84 @@ const gameBoard = (() => {
  * and getting inputs
  */
 const displayController = (() => {
-    /**
-     * game Elements
-     */
-    const gameConfigElement = document.querySelector(".gameConfig");
-    const boardEl = document.querySelector(".board");
-    const resultElement = document.querySelector(".result");
+  /**
+   * game Elements
+   */
+  const gameConfigElement = document.querySelector(".gameConfig");
+  const boardEl = document.querySelector(".board");
+  const resultElement = document.querySelector(".result");
 
-    /**
-     * managing items
-     */
-    const cells = boardEl.querySelectorAll(".cell");
-    const board = gameBoard.getBoard();
+  /**
+   * managing items
+   */
+  const cells = boardEl.querySelectorAll(".cell");
+  const board = gameBoard.getBoard();
 
-    /**
-     * updates the board UI with contents of gameBoard
-     */
-    const updateBoard = () => {
-        cells.forEach((cell, index) => {
-            if (board[index] === "X") {
-                cell.classList.add("cell--x");
-                cell.classList.remove("cell--o");
-            } else if (board[index] === "O") {
-                cell.classList.add("cell--o");
-                cell.classList.remove("cell--x");
-            } else if (board[index] === "") {
-                cell.classList.remove("cell--x");
-                cell.classList.remove("cell--o");
-            }
-        });
-    }
+  /**
+   * updates the board UI with contents of gameBoard
+   */
+  const updateBoard = () => {
+    cells.forEach((cell, index) => {
+      if (board[index] === "X") {
+        cell.classList.add("cell--x");
+        cell.classList.remove("cell--o");
+      } else if (board[index] === "O") {
+        cell.classList.add("cell--o");
+        cell.classList.remove("cell--x");
+      } else if (board[index] === "") {
+        cell.classList.remove("cell--x");
+        cell.classList.remove("cell--o");
+      }
+    });
+  }
 
-    /**
-     * show menu functions
-     * they hide all menus expect one that is current
-     */
-    const showConfigMenu = () => {
-        gameConfigElement.classList.remove("hidden");
-        boardEl.classList.add("hidden");
-        resultElement.classList.add("hidden");
-    }
+  /**
+   * show menu functions
+   * they hide all menus expect one that is current
+   */
+  const showConfigMenu = () => {
+    gameConfigElement.classList.remove("hidden");
+    boardEl.classList.add("hidden");
+    resultElement.classList.add("hidden");
+  }
 
-    const showBoard = () => {
-        gameConfigElement.classList.add("hidden");
-        boardEl.classList.remove("hidden");
-        resultElement.classList.add("hidden");
-    }
+  const showBoard = () => {
+    gameConfigElement.classList.add("hidden");
+    boardEl.classList.remove("hidden");
+    resultElement.classList.add("hidden");
+  }
 
-    const showResult = () => {
-        gameConfigElement.classList.add("hidden");
-        boardEl.classList.add("hidden");
-        resultElement.classList.remove("hidden");
-    }
+  const showResult = () => {
+    gameConfigElement.classList.add("hidden");
+    boardEl.classList.add("hidden");
+    resultElement.classList.remove("hidden");
+  }
 
-    /**
-     * changes the turns in the display
-     */
-    const exchangeTurns = () => {
-        boardEl.classList.toggle("x-turn");
-        boardEl.classList.toggle("o-turn");
-    }
+  /**
+   * changes the turns in the display
+   */
+  const exchangeTurns = () => {
+    boardEl.classList.toggle("x-turn");
+    boardEl.classList.toggle("o-turn");
+  }
 
-    /**
-     * attaches click events to the board
-     */
-    const attachCellEvents = () => {
-        boardEl.addEventListener("click", (e) => {
-            game.play(e);
-        })
-    };
+  /**
+   * attaches click events to the board
+   */
+  const attachCellEvents = () => {
+    boardEl.addEventListener("click", (e) => {
+      game.play(e);
+    })
+  };
 
-    return {
-        updateBoard,
-        showConfigMenu,
-        showBoard,
-        showResult,
-        exchangeTurns,
-        attachCellEvents
-    }
+  return {
+    updateBoard,
+    showConfigMenu,
+    showBoard,
+    showResult,
+    exchangeTurns,
+    attachCellEvents
+  }
 })();
 
 /**
@@ -146,9 +172,9 @@ const displayController = (() => {
  */
 const createPlayer = () => {
 
-    return {
+  return {
 
-    }
+  }
 };
 
 /**
@@ -156,35 +182,35 @@ const createPlayer = () => {
  * comminute and managing the game on a high value
  */
 const game = (() => {
-    const boardEl = document.querySelector(".board");
+  const boardEl = document.querySelector(".board");
 
-    /**
-     * this function marks the player mark in the board
-     * it also exchanges turns and updates interface
-     * @param {event} e 
-     * @returns 
-     */
-    const play = (e) => {
-        const ID = e.target.dataset.cellid;
+  /**
+   * this function marks the player mark in the board
+   * it also exchanges turns and updates interface
+   * @param {event} e 
+   * @returns 
+   */
+  const play = (e) => {
+    const ID = e.target.dataset.cellid;
 
-        if (gameBoard.getBoard()[ID] !== "") {
-            return;
-        }
-
-        if (boardEl.classList.contains("x-turn")) {
-            gameBoard.playCell(ID, "X");
-        } else {
-            gameBoard.playCell(ID, "O");
-        }
-
-        displayController.exchangeTurns();
-        displayController.updateBoard();
+    if (gameBoard.getBoard()[ID] !== "") {
+      return;
     }
 
-    displayController.attachCellEvents();
+    if (boardEl.classList.contains("x-turn")) {
+      gameBoard.playCell(ID, "X");
+    } else {
+      gameBoard.playCell(ID, "O");
+    }
+
+    displayController.exchangeTurns();
     displayController.updateBoard();
+  }
 
-    return {
-        play
-    }
+  displayController.attachCellEvents();
+  displayController.updateBoard();
+
+  return {
+    play
+  }
 })();

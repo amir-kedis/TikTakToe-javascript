@@ -3,9 +3,9 @@
  */
 const gameBoard = (() => {
   const _board = [
-    "O", "X", "X",
-    "O", "X", "",
-    "X", "X", "O"
+    "", "", "",
+    "", "", "",
+    "", "", ""
   ];
 
   const getBoard = () => {
@@ -45,13 +45,10 @@ const gameBoard = (() => {
     const columns = [
       [_board[0], _board[3], _board[6]],
       [_board[1], _board[4], _board[7]],
-      [_board[6], _board[7], _board[8]],
+      [_board[2], _board[5], _board[8]],
     ]
 
     for (const col of columns) {
-      console.log({ col });
-      console.log(col.every((el) => el === symbol));
-
       if (col.every((el) => el === symbol)) {
         return true;
       }
@@ -74,9 +71,6 @@ const gameBoard = (() => {
     ]
 
     for (const diagonal of diagonals) {
-      console.log({ diagonal });
-      console.log(diagonal.every((el) => el === symbol));
-
       if (diagonal.every((el) => el === symbol)) {
         return true;
       }
@@ -85,14 +79,26 @@ const gameBoard = (() => {
     return false;
   }
 
-
+  /**
+   * return the winner player or empty string if no player has won
+   * @returns "x" || "O" || ""
+   */
   const checkForWin = () => {
-    
+    // for X 
+    if (_checkForRows("X") || _checkForColumns("X") || _checkForDiagonals("X")) {
+      return "X";
+    }
+    // for O
+    if (_checkForRows("O") || _checkForColumns("O") || _checkForDiagonals("O")) {
+      return "O";
+    }
+    return "";
   };
 
   return {
     getBoard,
-    playCell
+    playCell,
+    checkForWin
   }
 })();
 

@@ -1,12 +1,11 @@
 /**
- * This Module is responsible of controlling
- * and storing the game board
+ * This Module is responsible of controlling * and storing the game board
  */
 const gameBoard = (() => {
     const _board = [
         "", "", "",
         "", "", "",
-        "", "", ""
+        "O", "O", "O"
     ];
 
     const getBoard = () => {
@@ -18,6 +17,37 @@ const gameBoard = (() => {
             _board[index] = symbol;
         }
     };
+
+    const checkForWin = () => {
+        const winningCombinations = [
+            ["X", "X", "X", "", "", "", "", "", "",],
+            ["", "", "", "X", "X", "X", "", "", "",],
+            ["", "", "", "", "", "", "X", "X", "X",],
+            ["X", "", "", "X", "", "", "X", "", "",],
+            ["", "X", "", "", "X", "", "", "X", "",],
+            ["", "", "X", "", "", "X", "", "", "X",],
+            ["X", "", "", "", "X", "", "", "", "X",],
+            ["", "", "X", "", "X", "", "X", "", "",],
+        ];
+    };
+
+    /**
+     * return true if game is won by row combination 
+     * by the symbol
+     * @param {String} symbol 
+     * @returns bool
+     */
+    const _checkForRows = (symbol) => {
+        for (let row = 0; row < 3; row++) {
+            const boardRow = _board.slice(row * 3, (row + 1) * 3);
+            if (boardRow.every((el) => el === symbol)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     return {
         getBoard,

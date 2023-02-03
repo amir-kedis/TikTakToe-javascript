@@ -22,6 +22,12 @@ const gameBoard = (() => {
  */
 const displayController = (() => {
     /**
+     * game Elements
+     */
+    const gameConfigElement = document.querySelector(".gameConfig");
+    const boardEl = document.querySelector(".board");
+    const resultElement = document.querySelector(".result");
+    /**
      * updates the board UI with contents of gameBoard
      */
     const updateBoard = () => {
@@ -42,8 +48,34 @@ const displayController = (() => {
         });
     }
 
+
+    /**
+     * show menu functions
+     * they hide all menus expect one that is current
+     */
+    const showConfigMenu = () => {
+        gameConfigElement.classList.remove("hidden");
+        boardEl.classList.add("hidden");
+        resultElement.classList.add("hidden");
+    }
+
+    const showBoard = () => {
+        gameConfigElement.classList.add("hidden");
+        boardEl.classList.remove("hidden");
+        resultElement.classList.add("hidden");
+    }
+
+    const showResult = () => {
+        gameConfigElement.classList.add("hidden");
+        boardEl.classList.add("hidden");
+        resultElement.classList.remove("hidden");
+    }
+
     return {
-        updateBoard
+        updateBoard,
+        showConfigMenu,
+        showBoard,
+        showResult
     }
 })();
 

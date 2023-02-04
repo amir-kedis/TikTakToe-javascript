@@ -5,6 +5,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
+  @media screen and (max-width: 425px) {
+    //border: 2px solid #000;
+    font-size: 10px;
+  }
 }
 
 :root {
@@ -28,6 +33,9 @@ header {
 h1 {
   font-size: 6rem;
   font-weight: bold;
+  @media screen and (max-width: 425px) {
+    font-size: 3rem;
+  }
 }
 
 main {
@@ -39,6 +47,9 @@ main {
   display: flex;
   justify-content: space-around;
   gap: 10rem;
+  @media screen and (max-width: 425px) {
+    gap: 2rem;
+  }
 
   &__player {
     display: flex;
@@ -76,6 +87,8 @@ main {
   margin-top: 4rem;
   padding: 1.5rem 2rem;
   cursor: pointer;
+
+  animation: tilt-shaking 0.7s infinite;
 }
 
 footer {
@@ -100,6 +113,8 @@ footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+
+  user-select: none;
 
   .cell {
     cursor: pointer;
@@ -169,6 +184,11 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 3rem;
+    @media screen and (max-width: 600px) {
+      width: 90vw;
+      margin: 1rem;
+      height: 50vh;
+    }
   }
 
   h2 {
@@ -202,4 +222,12 @@ footer {
 
 .shown {
   display: block;
+}
+
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
 }

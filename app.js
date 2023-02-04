@@ -379,7 +379,7 @@ const game = (() => {
     }
 
     displayController.updateBoard();
-    await _sleep(500);
+    await _sleep(400);
 
     // check if the game has ended
     if (gameBoard.checkForWin() === "X") {

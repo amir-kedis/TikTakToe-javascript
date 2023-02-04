@@ -332,6 +332,15 @@ const game = (() => {
   }
 
   /**
+   * 
+   * @param {Number} ms 
+   * @returns a sleep promise
+   */
+  const _sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
    * this function marks the player mark in the board
    * it also exchanges turns and updates interface
    * Main Function of the game
@@ -339,7 +348,7 @@ const game = (() => {
    * @param {event} e 
    * @returns 
    */
-  const play = (e) => {
+  const play = async (e) => {
     const ID = e.target.dataset.cellid;
 
     if (gameBoard.getBoard()[ID] !== "") {
@@ -370,6 +379,7 @@ const game = (() => {
     }
 
     displayController.updateBoard();
+    await _sleep(500);
 
     // check if the game has ended
     if (gameBoard.checkForWin() === "X") {

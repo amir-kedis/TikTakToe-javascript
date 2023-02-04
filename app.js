@@ -333,9 +333,7 @@ const game = (() => {
 
       gameBoard.playCell(ID, "X");
       displayController.exchangeTurns();
-      //gameBoard.playCell(_aiEasyMove(), "O");
-
-      console.log(aiMadness.minimax(gameBoard, gameBoard.EmptyCellsNumbers(), false));
+      gameBoard.playCell(aiMadness.getBestMove(gameBoard.getBoard()).bestMove, "O");
       displayController.exchangeTurns();
     }
 
@@ -381,11 +379,12 @@ const aiMadness = (() => {
     for (let i = 0; i < 9; i++) {
       if (board[i] === "") {
         board[i] = "O";
-        let score = minimaxTest(board);
+        let score = miniMaxTest(board);
         if (score > bestScore) {
           bestScore = score;
-          bestMove[i];
+          bestMove = i;
         }
+        board[i] = "";
       }
     }
 
@@ -452,6 +451,10 @@ const aiMadness = (() => {
       //return minEval
       return minEval;
     }
+  }
+
+  const miniMaxTest = (board) => {
+    return 1;
   }
 
 

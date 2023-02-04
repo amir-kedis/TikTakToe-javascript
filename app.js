@@ -107,20 +107,35 @@ const gameBoard = (() => {
     return (isBoardFull && !isWon);
   }
 
+  /**
+   * returns true if there is no possible move
+   * @returns boolean
+   */
   const isGameOver = () => {
     return (checkForTie() || checkForWin() !== "");
   }
 
+  /**
+   * resets the board to ""
+   */
   const resetBoard = () => {
     for (let i = 0; i < 9; i++) {
       _board[i] = "";
     }
   }
 
+  /**
+   * returns true if every element of the board is ""
+   * @returns Bool
+   */
   const isEmpty = () => {
     return _board.every(cell => cell === "");
   }
 
+  /**
+   * returns the number of empty cells in the board
+   * @returns NumOfEmptyCells
+   */
   const EmptyCellsNumbers = () => {
     let count = 0;
     for (const cell of _board) {
@@ -131,6 +146,10 @@ const gameBoard = (() => {
     return count;
   }
 
+  /**
+   * returns the possible moves
+   * @returns Array of possible moves indices
+   */
   const getLegalMoves = () => {
     const legalMoves = [];
 
@@ -275,11 +294,17 @@ const game = (() => {
 
   const boardEl = document.querySelector(".board");
 
+  /**
+   * attaches the events to the DOM
+   */
   const init = () => {
     displayController.attachBtnEvents();
     displayController.attachCellEvents();
   }
 
+  /**
+   * sets the player and shows the board
+   */
   const startGame = () => {
     // display part
     displayController.showBoard();
@@ -295,6 +320,9 @@ const game = (() => {
     displayController.updateBoard();
   }
 
+  /**
+   * rests board and shows config Menu
+   */
   const restartGame = () => {
     gameBoard.resetBoard();
     displayController.updateBoard();
@@ -306,6 +334,8 @@ const game = (() => {
   /**
    * this function marks the player mark in the board
    * it also exchanges turns and updates interface
+   * Main Function of the game
+   * called when user clicks on the board
    * @param {event} e 
    * @returns 
    */
@@ -316,6 +346,7 @@ const game = (() => {
       return;
     }
 
+    // chooses the type of game based on the player type
     if (player2.type === "human") {
       if (boardEl.classList.contains("x-turn")) {
         gameBoard.playCell(ID, "X");
@@ -323,14 +354,14 @@ const game = (() => {
         gameBoard.playCell(ID, "O");
       }
       displayController.exchangeTurns();
-    } else if (player2.type === "aiEasy") {
-
+    }
+    else if (player2.type === "aiEasy") {
       gameBoard.playCell(ID, "X");
       displayController.exchangeTurns();
       gameBoard.playCell(_aiEasyMove(), "O");
       displayController.exchangeTurns();
-    } else if (player2.type === "aiHard") {
-
+    }
+    else if (player2.type === "aiHard") {
       gameBoard.playCell(ID, "X");
       displayController.exchangeTurns();
       console.log(aiMadness.getBestMove(gameBoard.getBoard()));
@@ -338,9 +369,9 @@ const game = (() => {
       displayController.exchangeTurns();
     }
 
-
     displayController.updateBoard();
 
+    // check if the game has ended
     if (gameBoard.checkForWin() === "X") {
       displayController.showResult("X WON!!!");
     } else if (gameBoard.checkForWin() === "O") {
@@ -350,11 +381,10 @@ const game = (() => {
     }
   }
 
+  // gets random move od the legal moves
   const _aiEasyMove = () => {
     const legalMoves = gameBoard.getLegalMoves();
-
     const randomNum = Math.floor(Math.random() * legalMoves.length);
-
     return legalMoves[randomNum];
   }
 
@@ -382,8 +412,9 @@ const aiMadness = (() => {
 
         board[i] = "O";
 
-        let score = minimax(board, gameBoard.EmptyCellsNumbers(), true);
+        let score = minimax(board, gameBoard.EmptyCellsNumbers(), true); // Next turn will be maximizing player
 
+        // "O" is minimizing so we take the lowest score
         if (score < bestScore) {
 
           bestScore = score;
@@ -399,9 +430,8 @@ const aiMadness = (() => {
   }
 
   /**
-   * 
-   * @param {gameBoard} position 
-   * @returns static evaluation of current position
+   * static evaluation of current position
+   * @returns 0 || 1 || -1
    */
   const _evaluatePosition = () => {
     if (gameBoard.checkForTie()) {
@@ -416,7 +446,7 @@ const aiMadness = (() => {
   }
 
   /**
-   * 
+   * returns the score of a move
    * @param {Board} board 
    * @param {EmptyCellsNumbers} depth 
    * @param {Boolean} maximizingPlayer 
@@ -458,6 +488,7 @@ const aiMadness = (() => {
           // eval = minimax(child, depth -1, true)
           board[i] = "O";
           const eval = minimax(board, depth - 1, true);
+          // UNDO
           board[i] = "";
           // minEval = min(minEval, eval)
           minEval = Math.min(minEval, eval);
@@ -470,7 +501,6 @@ const aiMadness = (() => {
   }
 
   return {
-    minimax,
     getBestMove
   }
 })();

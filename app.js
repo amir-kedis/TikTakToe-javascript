@@ -264,79 +264,6 @@ const createPlayer = (symbol, type) => {
 };
 
 
-const aiMadness = (() => {
-
-  let bestMove;
-
-  /**
-   * 
-   * @param {gameBoard} position 
-   * @param {EmptyCellsNumbers} depth 
-   * @returns static evaluation of current position
-   */
-  const _evaluatePosition = (position, depth) => {
-    if (position.checkForTie()) {
-      return 0;
-    }
-    if (position.checkForWin() === "x") {
-      return -1 * (1 + depth);
-    }
-    if (position.checkForWin === "O") {
-      return 1 * (1 + depth);
-    }
-  }
-
-  /**
-   * 
-   * @param {gameBoard} position 
-   * @param {EmptyCellsNumbers} depth 
-   * @param {Boolean} maximizingPlayer 
-   */
-  const minimax = (position, depth, maximizingPlayer) => {
-    // if depth === 0 or game over in position
-    if (depth === 0 || position.isGameOver()) {
-      // return static evaluation of position
-      return _evaluatePosition(position, depth);
-    }
-
-    // if maximizingPlayer
-    if (maximizingPlayer) {
-      // maxEval = -infinity
-      let maxEval = -Infinity;
-      // for each child of position
-      position.getLegalMoves().forEach(move => {
-        // eval = minimax(child, depth -1, false)
-        const eval = minimax(position.playCell(move, "O"), depth - 1, false);
-        // maxEval = max(maxEval, eval)
-        maxEval = Math.max(maxEval, eval);
-      })
-      // return maxEval
-      return maxEval;
-    }
-
-    // else
-    else {
-      // minEval = +infinity
-      let minEval = +Infinity;
-      // for each child of position
-      position.getLegalMoves().forEach(move => {
-        // eval = minimax(child, depth -1, true)
-        const eval = minimax(position.playCell(move, "O"), depth - 1, true);
-        // minEval = min(minEval, eval)
-        minEval = Math.min(minEval, eval);
-      })
-      //return minEval
-      return minEval;
-    }
-  }
-
-
-  return {
-    minimax,
-  }
-})();
-
-
 /**
  * this module is responsible of making other modules 
  * comminute and managing the game on a high value
@@ -407,7 +334,7 @@ const game = (() => {
       gameBoard.playCell(ID, "X");
       displayController.exchangeTurns();
       //gameBoard.playCell(_aiEasyMove(), "O");
-      
+
       console.log(aiMadness.minimax(gameBoard, gameBoard.EmptyCellsNumbers(), false));
       displayController.exchangeTurns();
     }
@@ -440,6 +367,99 @@ const game = (() => {
   }
 })();
 
+
+const aiMadness = (() => {
+
+  /**
+   * runs minimax for each move and gets the move with the best score
+   * @param {board} board - call it with gameBoard.getBoard()
+   */
+  const getBestMove = (board) => {
+    let bestScore = -Infinity;
+    let bestMove;
+
+    for (let i = 0; i < 9; i++) {
+      if (board[i] === "") {
+        board[i] = "O";
+        let score = minimaxTest(board);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove[i];
+        }
+      }
+    }
+
+    return { bestMove, bestScore };
+  }
+
+  /**
+   * 
+   * @param {gameBoard} position 
+   * @param {EmptyCellsNumbers} depth 
+   * @returns static evaluation of current position
+   */
+  const _evaluatePosition = (position, depth) => {
+    if (position.checkForTie()) {
+      return 0;
+    }
+    if (position.checkForWin() === "x") {
+      return -1 * (1 + depth);
+    }
+    if (position.checkForWin === "O") {
+      return 1 * (1 + depth);
+    }
+  }
+
+  /**
+   * 
+   * @param {gameBoard} position 
+   * @param {EmptyCellsNumbers} depth 
+   * @param {Boolean} maximizingPlayer 
+   */
+  const minimax = (position, depth, maximizingPlayer) => {
+    // if depth === 0 or game over in position
+    if (depth === 0 || position.isGameOver()) {
+      // return static evaluation of position
+      return _evaluatePosition(position, depth);
+    }
+
+    // if maximizingPlayer
+    if (maximizingPlayer) {
+      // maxEval = -infinity
+      let maxEval = -Infinity;
+      // for each child of position
+      position.getLegalMoves().forEach(move => {
+        // eval = minimax(child, depth -1, false)
+        const eval = minimax(position.playCell(move, "O"), depth - 1, false);
+        // maxEval = max(maxEval, eval)
+        maxEval = Math.max(maxEval, eval);
+      })
+      // return maxEval
+      return maxEval;
+    }
+
+    // else
+    else {
+      // minEval = +infinity
+      let minEval = +Infinity;
+      // for each child of position
+      position.getLegalMoves().forEach(move => {
+        // eval = minimax(child, depth -1, true)
+        const eval = minimax(position.playCell(move, "O"), depth - 1, true);
+        // minEval = min(minEval, eval)
+        minEval = Math.min(minEval, eval);
+      })
+      //return minEval
+      return minEval;
+    }
+  }
+
+
+  return {
+    minimax,
+    getBestMove
+  }
+})();
 
 
 // start game

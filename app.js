@@ -374,17 +374,23 @@ const aiMadness = (() => {
    * @param {board} board - call it with gameBoard.getBoard()
    */
   const getBestMove = (board) => {
-    let bestScore = -Infinity;
+    let bestScore = +Infinity;
     let bestMove;
 
     for (let i = 0; i < 9; i++) {
       if (board[i] === "") {
+
         board[i] = "O";
-        let score = minimax(board, gameBoard.EmptyCellsNumbers(), false);
-        if (score > bestScore) {
+
+        let score = minimax(board, gameBoard.EmptyCellsNumbers(), true);
+
+        if (score < bestScore) {
+
           bestScore = score;
           bestMove = i;
+
         }
+
         board[i] = "";
       }
     }
@@ -402,10 +408,10 @@ const aiMadness = (() => {
       return 0;
     }
     if (gameBoard.checkForWin() === "X") {
-      return -1;
+      return 1;
     }
     if (gameBoard.checkForWin() === "O") {
-      return 1;
+      return -1;
     }
   }
 
@@ -462,46 +468,6 @@ const aiMadness = (() => {
       return minEval;
     }
   }
-
-  const miniMaxTest = (board) => {
-    // if depth === 0 or game over in position
-    let gameIsOver = (gameBoard.checkForTie() || gameBoard.checkForWin() !== "");
-    if (depth === 0 || gameIsOver) {
-      // return static evaluation of position
-      return _evaluatePosition(position, depth);
-    }
-
-    // if maximizingPlayer
-    if (maximizingPlayer) {
-      // maxEval = -infinity
-      let maxEval = -Infinity;
-      // for each child of position
-      position.getLegalMoves().forEach(move => {
-        // eval = minimax(child, depth -1, false)
-        const eval = minimax(position.playCell(move, "O"), depth - 1, false);
-        // maxEval = max(maxEval, eval)
-        maxEval = Math.max(maxEval, eval);
-      })
-      // return maxEval
-      return maxEval;
-    }
-
-    // else
-    else {
-      // minEval = +infinity
-      let minEval = +Infinity;
-      // for each child of position
-      position.getLegalMoves().forEach(move => {
-        // eval = minimax(child, depth -1, true)
-        const eval = minimax(position.playCell(move, "O"), depth - 1, true);
-        // minEval = min(minEval, eval)
-        minEval = Math.min(minEval, eval);
-      })
-      //return minEval
-      return minEval;
-    }
-  }
-
 
   return {
     minimax,

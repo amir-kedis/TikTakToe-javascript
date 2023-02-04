@@ -291,6 +291,8 @@ const game = (() => {
   const restartGame = () => {
     gameBoard.resetBoard();
     displayController.updateBoard();
+    boardEl.classList.add("x-turn");
+    boardEl.classList.remove("o-turn");
     displayController.showConfigMenu();
   }
 
